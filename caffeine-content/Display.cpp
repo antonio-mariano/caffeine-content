@@ -105,22 +105,22 @@ enum { PLUS = 0, MINUS = 1, OK = 2 };
 
 const unsigned long debounceTime = 30;     // Debounce delay
 const unsigned long holdTime = 500;        // Time before auto-repeat
-const unsigned long repeatInterval = 100;  // Auto-repeat speed
+const unsigned long repeatInterval = 75;  // Auto-repeat speed
 
 // -------------------------------
 // Button state tracking
 // -------------------------------
-bool buttonState[3] = {LOW, LOW, LOW};          // Debounced state
+int  buttonState[3] = {LOW, LOW, LOW};          // Debounced state
 bool lastReading[3] = {LOW, LOW, LOW};          // Last raw reading
-unsigned long lastDebounce[3] = {0, 0, 0};      // Last change time
-unsigned long pressStartTime[3] = {0, 0, 0};    // When button was pressed
-unsigned long lastRepeatTime[3] = {0, 0, 0};    // Last auto-repeat event
+unsigned long lastChangeTime[3] = {0, 0, 0};      // Last change time
+//unsigned long pressStartTime[3] = {0, 0, 0};    // When button was pressed
+//unsigned long lastRepeatTime[3] = {0, 0, 0};    // Last auto-repeat event
 
 // -------------------------------
 // Application variable
 // -------------------------------
 int value = 0;
-
+#define HOLD 2
 // -------------------------------
 // Reset function (called on OK long press)
 // -------------------------------
@@ -140,75 +140,43 @@ void setupButtons()
 }
 
 
-// -------------------------------
-// Read and process one button
-// -------------------------------
-void handleButton(int id) {
+void runButtons(){
+
+  int id = 0;
+
   bool reading = digitalRead(buttonPins[id]);
 
-  // Debounce logic
-  if (reading != lastReading[id]) {
-    lastDebounce[id] = millis();
-    lastReading[id] = reading;
+  // After hold mode, state returns low as soon as the button is released
+  if(reading == LOW && buttonState[id] == HOLD){
+    buttonState[id] = LOW;
   }
 
-  if (millis() - lastDebounce[id] > debounceTime) {
-    if (reading != buttonState[id]) {
+  if(reading != lastReading[id]){
+    lastChangeTime[id] = millis(); // começou uma mudança
+  }
+
+  //Apenas considera depois de estabilizar no mesmo valor por 30 ms
+  if (millis() - lastChangeTime[id] > debounceTime) { 
+    if (reading + buttonState[id] == 1) { // reading and state are low and high or vice versa
       buttonState[id] = reading;
-
-      // Button just pressed
       if (buttonState[id] == HIGH) {
-        pressStartTime[id] = millis();
-        lastRepeatTime[id] = millis();
-
-        if (id == PLUS) {
           value++;
-          Serial.print("Value = ");
           Serial.println(value);
-        }
-        else if (id == MINUS) {
-          value--;
-          Serial.print("Value = ");
-          Serial.println(value);
-        }
-        // OK does NOT increment; only long press triggers reset
       }
     }
   }
 
-  // Auto-repeat for PLUS and MINUS
-  if (buttonState[id] == HIGH && (id == PLUS || id == MINUS)) {
-    if (millis() - pressStartTime[id] > holdTime) {
-      if (millis() - lastRepeatTime[id] > repeatInterval) {
-        lastRepeatTime[id] = millis();
-
-        if (id == PLUS) {
-          value++;
-        } else {
-          value--;
-        }
-
-        Serial.print("Value = ");
-        Serial.println(value);
-      }
-    }
+  if (millis() - lastChangeTime[id] > holdTime && buttonState[id] == HIGH) {
+    buttonState[id] = HOLD;
   }
 
-  // Long press for OK button → reset
-  if (id == OK && buttonState[id] == HIGH) {
-    if (millis() - pressStartTime[id] > holdTime) {
-      resetFunction();
-      // Prevent multiple resets while holding
-      pressStartTime[id] = millis() + 100000; 
-    }
+  if (millis() - lastChangeTime[id] > repeatInterval && buttonState[id] == HOLD) {
+    value++;
+    Serial.println(value);
+    lastChangeTime[id] = millis(); // começou uma mudança
   }
-}
 
-
-void runButtons(){
-    handleButton(PLUS);
-  handleButton(MINUS);
-  handleButton(OK);
+  lastReading[0] = reading;
 
 }
 
