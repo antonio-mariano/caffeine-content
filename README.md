@@ -1,7 +1,7 @@
-# Caffeine Content – Get a specific/desired caffeine quantity in your coffe
+# Caffeine Content – Control of Your Coffee’s Caffeine Level
 
-A caffeine content selector built around a **Raspberry Pi Pico**. It predicts the caffeine concentration curve as coffe flows out of the machine and uses it to stop the machine at the right time
-Future goals include interpreting the data and developing a smart alarm that wakes the user during light‑sleep phases
+A system that lets you choose the exact **caffeine content** of your coffee. Using a **Raspberry Pi Pico**, it calculates and controls the caffeine content of a coffee produced by a capsule machine.
+It estimates how caffeine concentration evolves during extraction, determines the correct start and stop times for the machine, and actuates the system to produce a coffee with the desired caffeine level.
 
 ---
 <p align="center">
@@ -15,7 +15,7 @@ The system predicts caffeine content...
 The system collects pressure deltas in four different positions on a mattress during sleep and stores it for later analysis.  
 The figure below summarizes the full workflow:
 
-![Overview](images/overview.png)
+![Overview](images/Overview.png)
 ---
 ## ✨ Features
 - Real‑time movement detection and event logging  
