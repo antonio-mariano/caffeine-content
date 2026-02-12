@@ -1,50 +1,25 @@
 # Caffeine Content – Control of Your Coffee’s Caffeine Level
 
-A system that lets you choose the exact **caffeine content** of your coffee. Using a **Raspberry Pi Pico**, it calculates and controls the caffeine content of a coffee produced by a capsule machine.
-It estimates how caffeine concentration evolves during extraction, determines the correct start and stop times for the machine, and actuates the system to produce a coffee with the desired caffeine level.
-
----
 <p align="center">
   <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white">
-  <img src="https://img.shields.io/badge/Raspberry%20Pi%20Pico%20W-C51A4A?style=for-the-badge&logo=raspberrypi&logoColor=white">
+  <img src="https://img.shields.io/badge/Raspberry%20Pi%20Pico-C51A4A?style=for-the-badge&logo=raspberrypi&logoColor=white">
   <img src="https://img.shields.io/badge/Arduino_IDE-00979D?style=for-the-badge&logo=arduino&logoColor=white">
 </p>
 
 ## 📌 Project Overview
-The system predicts caffeine content...
-The system collects pressure deltas in four different positions on a mattress during sleep and stores it for later analysis.  
-The figure below summarizes the full workflow:
+The system models caffeine extraction curve, determines the correct start and stop times for the coffe machine, and actuates the machine to produce a coffee with the desired caffeine level. The following diagram shows the steps
 
 ![Overview](images/Overview.png)
 ---
-## ✨ Features
-- Real‑time movement detection and event logging  
-- Low‑cost DIY pressure‑sensor array using velostat  
-- Embedded Wi‑Fi web server running on the Pico W for data transfer
-- One‑click data download via Python script  
-- MATLAB tools for visualization and analysis  
-- Calibration system to normalize sensor sensitivity  
-- End‑to‑end workflow: hardware → firmware → data → analysis  
-
 ## 💻 Software Requirements
 - Arduino IDE 2.x + Raspberry Pi Pico Board 4.5.2 or later
-- Python 3 with the `requests` package (`pip install requests`)
-- MATLAB 2019a or later
 
 ## 🧩 Components
-### Raspberry Pi Pico W + Firmware (Arduino IDE C++)
-- Sensor calibration
-- Reads the pressure‑sensor matrix  
-- Detects and stores movement events  
-- Serves a Wi‑Fi web server for data transfer in CSV format 
-
-### DIY Pressure Sensors
-- Based on *velostat*, a pressure‑dependent resistive sheet material  
-- Each sensor is a 3cm × 3cm velostat square between two 2.5cm × 2.5cm aluminum‑foil electrodes  
-- Resistance varies with applied pressure  
-- Four sensors are placed under the mattress at torso height  
-- Although physically in a line, they are electrically connected in matrix form to reduce wiring  
-
+- Raspberry Pi Pico + Firmware (Arduino IDE C++)
+- Solenoid/electromagnet push
+- 3x PNP transistors (e.g. BC327)
+- 2x 7-segments display + 7x ~= 51 Ohm resistors
+- 3x buttons
 ## 🔌 Circuit Assembly
 
 ![Schematic](images/schematic.png)
