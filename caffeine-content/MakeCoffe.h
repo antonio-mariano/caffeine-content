@@ -11,13 +11,15 @@
 
 // Machine parameters
 #define DEAD_TIME 3   // time after button press to start running coffe
-#define OVER_TIME 5  // seconds after button press that stills run coffe
+#define OVER_TIME 1  // seconds after button press that stills run coffe
 #define FLOW_RATE 2.0        // mL (or grams) per second
 
 void setupCoffe();
 
-void commandCafe(const String& args);
+void newCoffe(const String& args);
 
-void makeCoffe();
+void newCapsule();
 
-void commandSetLed(const String& args);
+void runCoffe();
+
+//void commandSetLed(const String& args);

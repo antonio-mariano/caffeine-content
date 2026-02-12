@@ -35,14 +35,13 @@ void setupCoffe()
   total_cfi = CAFFEINE_30 / (1 - exp(-30/LAMBDA)); //TODO pode ficar num setup
   used_cfi = 0.0f;
   used_vol = 0.0f;
-
 }
 
 
-void commandCafe(const String& args) {
+void newCoffe(const String& args) {
 
   if (args.length() == 0) {
-    Serial.println("Usage: Cafe <cafeine mg>");
+    Serial.println("Usage: coffe <cafeine mg>");
     return;
   }
 
@@ -52,21 +51,27 @@ void commandCafe(const String& args) {
 
   Serial.printf("Caffeine quantity: %.1f mg\nNext vol: %.3f mL\nFlow time: %d ms\n\n", desired_cfi, desired_vol, flow_time);
 
-  Serial.print("Starting the process...\n");
-  current_state = state_start;
+  current_state = state_start; // Starts the process
 
   // Update vars for the next coffe, as if the current coffe making process has already ended
   used_cfi += desired_cfi;
   used_vol += desired_vol;
 }
 
+void newCapsule(){
+  //Or call setupCoffe() just for these 2 resets
+  used_cfi = 0.0f;
+  used_vol = 0.0f;
 
-void makeCoffe() {
+  Serial.println("New capsule");
+}
+
+void runCoffe() {
 
   if(current_state == state_waiting) return;
   static unsigned long time = 0, button = 0;
-  float active_time;
 
+  // Presses the button if the counter is active
   digitalWrite(BUTTON_PIN, millis() - button < BUTTON_PRESS_TIME ? HIGH : LOW);
   
   switch (current_state)
@@ -74,7 +79,7 @@ void makeCoffe() {
     case state_start:
       time = millis();
       Serial.print("Start! Press button #1 and go to dead_time\n");
-      button = millis(); //Button is pressed
+      button = millis(); // Starts the button counter, pressing it for 250 ms
 
       current_state = state_dead_time;
       break;
@@ -85,15 +90,15 @@ void makeCoffe() {
         current_state = state_active_time;
         Serial.print("Changing to state state_active_time\n");
 
-        active_time = flow_time - over_time;
+        //Serial.printf("active_time = %d\n", flow_time - over_time);
       }
       break;
       
     case state_active_time:
-      if(millis() - time > active_time){
+      if(millis() - time > flow_time - over_time){
         time = millis();
         Serial.print("Press button #2\n");
-        button = millis(); //Button is pressed
+        button = millis(); // Starts the button counter, pressing it for 250 ms
 
         Serial.print("Changing to state state_over_time\n");
 
@@ -103,8 +108,8 @@ void makeCoffe() {
 
     case state_over_time:  
       if(millis() - time > over_time){
-        Serial.print("End over-time => Coffe is ready\n"); //PRESS BUTTON
-        
+        Serial.print("End over-time => Coffe is ready\n");
+
         current_state = state_waiting;
       }
       break;

@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "Communication.h"
 #include "MakeCoffe.h"
+#include "Display.h"
 
 String inputBuffer = "";
 
@@ -36,8 +37,20 @@ void processInput() {
     args = trimmed.substring(firstSpace + 1);
   }
 
-  if (command.equalsIgnoreCase("cafe")) {
-    commandCafe(args);
+  if (command.equalsIgnoreCase("coffe")) {
+    newCoffe(args);
+  }
+
+  if (command.equalsIgnoreCase("capsule")) {
+    newCapsule();
+  }
+  
+  if (command.equalsIgnoreCase("digit")) {
+    showDigit(args.toInt());
+  }
+
+  if (command.equalsIgnoreCase("number")) {
+    showNumber(args.toInt());
   }
 
 }

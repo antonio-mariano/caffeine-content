@@ -1,6 +1,6 @@
 #include "Communication.h"
 #include "MakeCoffe.h"
-
+#include "Display.h"
 
 void setup() {
   pinMode(BUTTON_PIN, OUTPUT);
@@ -8,13 +8,18 @@ void setup() {
   while (!Serial) { }
 
   setupCoffe();
+  setupDisplay();
+  setupButtons();
+  
 }
 
 void loop() {
 
   if(handleSerialInput())  processInput();
 
-  makeCoffe();
+  runCoffe();
+  runDisplay();
+  runButtons();
     
 }
 
