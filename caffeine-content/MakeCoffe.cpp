@@ -66,7 +66,7 @@ void newCapsule(){
   Serial.println("New capsule");
 }
 
-void runCoffe() {
+void loopCoffe() {
 
   if(current_state == state_waiting) return;
   static unsigned long time = 0, button = 0;

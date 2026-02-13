@@ -20,6 +20,6 @@ void newCoffe(const String& args);
 
 void newCapsule();
 
-void runCoffe();
+void loopCoffe();
 
 //void commandSetLed(const String& args);

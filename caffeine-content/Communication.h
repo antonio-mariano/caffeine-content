@@ -1,6 +1,6 @@
 
 #pragma once
 
-bool handleSerialInput();
+//bool handleSerialInput();
 
-void processInput();
+void loopSerialInput();

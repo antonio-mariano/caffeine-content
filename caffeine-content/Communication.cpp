@@ -20,7 +20,9 @@ bool handleSerialInput() {
   return false;
 }
 
-void processInput() {
+void loopSerialInput() {
+
+  if(!handleSerialInput())  return;
   
   String trimmed = inputBuffer;
   trimmed.trim();
