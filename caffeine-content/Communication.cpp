@@ -46,13 +46,13 @@ void loopSerialInput() {
   if (command.equalsIgnoreCase("capsule")) {
     newCapsule();
   }
-  
-  if (command.equalsIgnoreCase("digit")) {
-    showDigit(args.toInt());
-  }
 
   if (command.equalsIgnoreCase("number")) {
     showNumber(args.toInt());
+  }
+
+  if (command.equalsIgnoreCase("letters")) {
+    showLetters(args);
   }
 
 }
