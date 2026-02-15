@@ -4,12 +4,12 @@
 // Segment pin order: A, B, C, D, E, F, G
 const int segmentPins[7] = {14, 15, 18, 17, 16, 13, 12};
 
-const int anode10 = 10, anode1 = 11;
+const int anode10 = 8, anode1 = 9;
 
 // Digit-to-segment map for numbers 0–9
 // 1 = segment ON, 0 = segment OFF
 // For common-anode displays: ON = LOW, OFF = HIGH
-const bool digitMap[14][7] = {
+const bool digitMap[][7] = {
  //A B C D E F G
   {1,1,1,1,1,1,0}, // 0
   {0,1,1,0,0,0,0}, // 1
@@ -25,7 +25,8 @@ const bool digitMap[14][7] = {
   {1,0,0,1,1,1,0}, // C  //10
   {1,1,1,1,1,1,0}, // O  //11
   {1,0,0,0,1,1,1}, // F  //12
-  {1,0,0,1,1,1,1}  // E  //13
+  {1,0,0,1,1,1,1}, // E  //13
+  {0,0,0,0,0,0,1}  // -  //14
 };
 
 
@@ -84,6 +85,7 @@ void showLetters(const String& letters) {
       case 'O': index = 11; break;
       case 'F': index = 12; break;
       case 'E': index = 13; break;
+      case '-': index = 14; break;
       default:  index = -1; break; //-1 means nothing to display
     }
     n == 0 ? digit_left = index : digit_right = index;

@@ -16,6 +16,13 @@
 
 void setupCoffe();
 
+// Turning off the machine as soon as it enters over_time will produce a volume equal to over_time
+// So, the minimum volume is the volume produced during over_time
+// This function convers that min_vol to caffeine
+int minimumCfi();
+
+int maximumCfi();
+
 void newCoffe(const String& args);
 
 void newCapsule();

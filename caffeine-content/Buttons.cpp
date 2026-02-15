@@ -5,6 +5,8 @@
 
 #define HOLD 2 // Buttons have 3 states: LOW, HIGH and HOLD
 
+const int possibleValuePin = 11;
+
 // -------------------------------
 // Button configuration
 // -------------------------------
@@ -24,12 +26,14 @@ bool lastReading[3] = {LOW, LOW, LOW};          // Last raw reading
 unsigned long lastChangeTime[3] = {0, 0, 0};    // Last change time
 
 int value = 0;  // Caffeine value
+bool display_and_return = false; // When the value is not present, the first click in PLUS or MINUS should display the value but not dec/increment
 
 // Initial configuration
 void setupButtons(){
   for (int i = 0; i < 3; i++) {
     pinMode(buttonPins[i], INPUT_PULLDOWN);
   }
+  pinMode(possibleValuePin, OUTPUT);
 }
 
 // Reset function (called on OK long press/hold)
@@ -41,16 +45,22 @@ void resetFunction() {
 // Called when Button <id> is pressed
 void onButtonPress(int id){
 
+  if(display_and_return){
+    display_and_return = false;
+    showNumber(value);
+    return;
+  }
+
   switch(id){
     case PLUS:
-      value++;
-      Serial.println(value);
+      if(value < 99) value++;
+      //Serial.println(value);
       showNumber(value);
       break;
     
     case MINUS:
-      value--;
-      Serial.println(value);
+      if(value > 0) value--;
+      //Serial.println(value);
       showNumber(value);
       break;
   }
@@ -67,27 +77,29 @@ void onButtonRelease(int id){
   }
 }
 
+
+
 // Called when Button <id> is long pressed
 void onButtonHold(int id)
 {
   switch(id){
     case PLUS:
-      value++;
+      if(value < 99) value++;
       showNumber(value);
-      Serial.println(value);
+      //Serial.println(value);
       break;
     
     case MINUS:
-      value--;
+      if(value > 0) value--;
       showNumber(value);
-      Serial.println(value);
+      //Serial.println(value);
       break;
     
-    case OK:
-      value = 0;
-      showNumber(value);
+    case OK: //Reset
+      // The next button press will change from "--" to the previous value, but not inc or decrement
+      display_and_return = true; 
+      showLetters("--");
       newCapsule();
-      Serial.println("Reset");
       break;
   }
 }
@@ -95,6 +107,8 @@ void onButtonHold(int id)
 // Button state logic, calling onButtonPress(), onButtonRelease() and onButtonHold() 
 void loopButtons()
 {
+  digitalWrite(possibleValuePin, value < minimumCfi() || value > maximumCfi());
+
   static int id = 0;
   if(id++ >= 3) id = 0;
 

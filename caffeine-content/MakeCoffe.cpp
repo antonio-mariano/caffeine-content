@@ -6,10 +6,11 @@
 #define BUTTON_PRESS_TIME 250
 #define BUTTON_INTERRUPT_MIN_TIME 250
 
-long dead_time, over_time; //ms
-long flow_time;
-float used_cfi, used_vol;  //mg , mL
-float total_cfi;           //mg
+long dead_time, over_time;   // ms
+long flow_time;              // ms
+float flow_rate;             // mL/ms
+float used_cfi, used_vol;    // mg , mL
+float total_cfi;             // mg
 
 float desired_cfi, desired_vol;
 
@@ -33,12 +34,25 @@ float cfi2vol(float cfi){
 
 void setupCoffe()
 {
-  dead_time = 1000*DEAD_TIME;
-  over_time = 1000*OVER_TIME;
+  dead_time = DEAD_TIME*1000.0; // seconds to ms
+  over_time = OVER_TIME*1000.0; // seconds to ms
+  flow_rate = FLOW_RATE/1000.0; // mL/s to mL/ms
 
   total_cfi = CAFFEINE_30 / (1 - exp(-30/LAMBDA)); //TODO pode ficar num setup
   used_cfi = 0.0f;
   used_vol = 0.0f;
+}
+
+// Turning off the machine as soon as it enters over_time will produce a volume equal to over_time
+// So, the minimum volume is the volume produced during over_time
+// This function convers that min_vol to caffeine
+int minimumCfi(){
+  float min_vol = over_time * flow_rate; 
+  return (int)(vol2cfi(used_vol + min_vol) - used_cfi + 1.0); //ceil round
+}
+
+int maximumCfi(){
+  return (int)(CAFFEINE_30 - used_cfi); //floor round
 }
 
 
@@ -49,9 +63,20 @@ void newCoffe(const String& args) {
     return;
   }
 
-  desired_cfi = args.toFloat(); 
+  desired_cfi = args.toFloat();
+
+  if((int)desired_cfi > maximumCfi()){
+    Serial.printf("Available cafeine in the capsule: %d\n", maximumCfi());
+    return;
+  }
+
+  if((int)desired_cfi < minimumCfi()){
+    Serial.printf("Minimum caffeine possible: %d mg (because we need flow-time >= over-time)\n", minimumCfi());
+    return;
+  }
+
   desired_vol = cfi2vol(used_cfi + desired_cfi) - used_vol;
-  flow_time = 1000.0 * desired_vol / FLOW_RATE; //ms
+  flow_time = desired_vol / flow_rate; //ms
 
   Serial.printf("Caffeine quantity: %.1f mg\nNext vol: %.3f mL\nFlow time: %d ms\n\n", desired_cfi, desired_vol, flow_time);
   current_state = state_start; // Starts the process
@@ -66,7 +91,7 @@ void newCapsule(){
 }
 
 float extractedCfi(long initial_time){
-  float extracted_vol = FLOW_RATE * (millis() - initial_time) / 1000;
+  float extracted_vol = flow_rate * (millis() - initial_time);
   float extracted_cfi = vol2cfi(used_vol + extracted_vol) - used_cfi;
   return extracted_cfi;
 }
@@ -86,12 +111,6 @@ void loopCoffe() {
       active_time = 0;
     else
       active_time = flow_time - over_time;
-
-    if(dead_time + active_time < BUTTON_PRESS_TIME + BUTTON_INTERRUPT_MIN_TIME){
-      Serial.println("Can't produce a coffe so small");
-      current_state = state_waiting;
-      return;
-    }
 
     time = millis();
     Serial.print("Start! go to dead_time\n");
