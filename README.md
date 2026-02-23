@@ -7,7 +7,7 @@
 </p>
 
 ## 📌 Project Overview
-The system models caffeine extraction curve, determines the correct start and stop times for the coffe machine, and actuates the machine to produce a coffee with the desired caffeine level. The following diagram shows the steps
+This project consists of a system that models caffeine extraction curve, determines the correct start and stop times for the coffe machine, and actuates the machine to produce a coffee with the desired caffeine level. The following diagram shows the steps
 
 ![Overview](images/Overview.png)
 ---
