@@ -14,14 +14,13 @@ This project consists of a system that models caffeine extraction curve, determi
 ## 💻 Software Requirements
 - Arduino IDE 2.x + Raspberry Pi Pico Board 4.5.2 or later
 
-## 🧩 Components and Function
+## 🧩 List of Components
 - Raspberry Pi Pico + Firmware (Arduino IDE C++)
-- Solenoid/electromagnet push - Activate the coffe machine button
-- 1x LED - Indicate that current selected caffeine is valid (minimum possible < X < available caffeine)
-- 3x PNP transistors supporting colector current at least 400 mA (e.g. BC327) - Drive the 2 displays and the solenoid
-- 2x 270Ω + 2x 120Ω resistors - Limit transistor base current and LED current
-- 2x 7-segments display - Display caffeine level
-- 7x 51Ω resistors - Limit segment current
+- Solenoid/electromagnet push - Activate the coffe button in the coffe machine
+- 1x LED + 1.5kΩ resistor - Indicate that selected caffeine is not valid (less than minimum possible or more than available caffeine)
+- 2x PNP transistors with Ic >= 200 mA (e.g. BC327) + 2x 680Ω resistors to drive the two displays 
+- 1x Logic level NMOS or NPN transistor capable of driving the solenoid (e.g. IRLZ44N)
+- 2x 7-segments display + 7x 51Ω resistors - Display caffeine level
 - 3x buttons - Select desired caffeine with (+), (-) and (OK/Reset) buttons
   
 ## 🔌 Circuit Assembly
@@ -29,10 +28,8 @@ This project consists of a system that models caffeine extraction curve, determi
 ![Schematic](images/schematic.png)
 
 ### Notes:
-- The displays are multiplexed, with the segments connected in paralell and the respective anodes are alternating activad by each transistor
-- The buttons are connected to the 3V3 pin, with pull-down resistors setup internally in the code
-- The transistor driving the solenoid needs more base current and has a smaller value resistor (120Ω) than the display transistors (270Ω)
-
+- The displays are multiplexed, with the segments connected in paralell and the respective anodes alternating activating each display
+- The buttons are connected to the 3V3 pin, with pull-down resistors setup internally in the code (Buttons.cpp/h)
 
 <p align="center">
   <img src="images/sensor_breadboard.jpg" >
