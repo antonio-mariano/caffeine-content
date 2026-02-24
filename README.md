@@ -7,29 +7,34 @@
 </p>
 
 ## 📌 Project Overview
-This project consists of a system that models caffeine extraction curve, determines the correct start and stop times for the coffe machine, and actuates the machine to produce a coffee with the desired caffeine level. The following diagram shows the steps
+This project implements a system that lets you control the caffeine level of your coffee. While caffeine can help maintain focus, the amount in a typical espresso is often excessive and may lead to a mental crash some time later, especially after lunch or eating. This system gives you control by allowing smaller, more frequent doses instead of large, infrequent ones.
+
+## ⚙️ How It Works
+The system models the caffeine extraction curve, calculates the correct start and stop times for the coffee machine, and actuates the machine to produce a coffee with the desired caffeine level.
+The diagram below illustrates the process:
 
 ![Overview](images/Overview.png)
 ---
 ## 💻 Software Requirements
-- Arduino IDE 2.x + Raspberry Pi Pico Board 4.5.2 or later
+- Arduino IDE 2.x
+- Raspberry Pi Pico Board (from earlephilhower) version 4.5.2 or later 
 
 ## 🧩 List of Components
-- Raspberry Pi Pico + Firmware (Arduino IDE C++)
-- Solenoid/electromagnet push - Activate the coffe button in the coffe machine
-- 1x LED + 1.5kΩ resistor - Indicate that selected caffeine is not valid (less than minimum possible or more than available caffeine)
-- 2x PNP transistors with Ic >= 200 mA (e.g. BC327) + 2x 680Ω resistors to drive the two displays 
-- 1x Logic level NMOS or NPN transistor capable of driving the solenoid (e.g. IRLZ44N)
-- 2x 7-segments display + 7x 51Ω resistors - Display caffeine level
-- 3x buttons - Select desired caffeine with (+), (-) and (OK/Reset) buttons
+- Raspberry Pi Pico running the firmware
+Solenoid/electromagnetic actuator — presses the coffee machine button
+-1× LED + 1.5 kΩ resistor — indicates invalid caffeine selection (below minimum or above available caffeine)
+- 2× PNP transistors with Ic ≥ 200 mA (e.g., BC327) + 2× 680 Ω resistors — drive the two 7‑segment displays
+- 1× logic‑level NMOS or NPN transistor capable of driving the solenoid (e.g., IRLZ44N)
+- 2x 7-segments display + 7x 51Ω resistors - display caffeine level
+- 3× buttons — increase (+), decrease (–), and confirm/reset (OK)
   
 ## 🔌 Circuit Assembly
 
 ![Schematic](images/schematic.png)
 
 ### Notes:
-- The displays are multiplexed, with the segments connected in paralell and the respective anodes alternating activating each display
-- The buttons are connected to the 3V3 pin, with pull-down resistors setup internally in the code (Buttons.cpp/h)
+- The displays are multiplexed: all segment pins are connected in parallel, and the anodes are alternated activated by the driving transistors
+- The buttons are connected to the 3.3 V rail, with internal pull‑down resistors configured in software (Buttons.cpp/h).
 
 <p align="center">
   <img src="images/sensor_breadboard.jpg" >
