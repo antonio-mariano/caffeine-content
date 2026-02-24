@@ -3,8 +3,8 @@
 #include "MakeCoffe.h"
 #include "Display.h"
 
-#define BUTTON_PRESS_TIME 250
-#define BUTTON_INTERRUPT_MIN_TIME 250
+#define BUTTON_PRESS_TIME 500
+#define BUTTON_INTERRUPT_MIN_TIME 500
 
 long dead_time, over_time;   // ms
 long flow_time;              // ms
@@ -104,7 +104,7 @@ void loopCoffe() {
 
 
   // Presses the button if the counter is active
-  digitalWrite(BUTTON_PIN, millis() - button < BUTTON_PRESS_TIME ? HIGH : LOW);
+  digitalWrite(SOLENOID_PIN, millis() - button < BUTTON_PRESS_TIME ? HIGH : LOW);
   
   if(current_state == state_start){
     if(flow_time < over_time)

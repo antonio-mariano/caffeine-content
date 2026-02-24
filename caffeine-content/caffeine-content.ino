@@ -4,9 +4,9 @@
 #include "Buttons.h"
 
 void setup() {
-  pinMode(BUTTON_PIN, OUTPUT);
+  pinMode(SOLENOID_PIN, OUTPUT);
   Serial.begin(115200);
-  while (!Serial) { }
+  while (!Serial && millis() < 2000) { }
 
   setupCoffe();
   setupDisplay();

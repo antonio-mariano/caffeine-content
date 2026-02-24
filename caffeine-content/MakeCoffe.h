@@ -1,7 +1,7 @@
 
 #pragma once
 
-#define BUTTON_PIN LED_BUILTIN
+#define SOLENOID_PIN 22  //25 = same as LED_BUILTIN
 
 //Capsule parameters
 #define CAFFEINE_30 63     // mg of caffeine in 30 mL of coffe
@@ -10,9 +10,9 @@
 #define LAMBDA 10.82    // "Time constant" for volume instead of time
 
 // Machine parameters
-#define DEAD_TIME 3   // time after button press to start running coffe
-#define OVER_TIME 1  // seconds after button press that stills run coffe
-#define FLOW_RATE 2.0        // mL (or grams) per second
+#define DEAD_TIME 2.80  // time after button press to start running coffe
+#define OVER_TIME 2.10  // seconds after button press that stills run coffe
+#define FLOW_RATE 1.75  // mL (or grams) per second
 
 void setupCoffe();
 
