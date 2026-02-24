@@ -9,11 +9,16 @@
 ## 📌 Project Overview
 This project implements a system that lets you control the caffeine level of your coffee. While caffeine can help maintain focus, the amount in a typical espresso is often excessive and may lead to a mental crash some time later, especially after lunch or eating. This system gives you control by allowing smaller, more frequent doses instead of large, infrequent ones.
 
+The diagram below illustrates the process:
+![Overview](images/Overview.png)
+
 ## ⚙️ How It Works
 The system models the caffeine extraction curve, calculates the correct start and stop times for the coffee machine, and actuates the machine to produce a coffee with the desired caffeine level.
-The diagram below illustrates the process:
 
-![Overview](images/Overview.png)
+
+The diagram below illustrates the process:
+![Caffeine curve plot](images/caffeine_plot.png)
+
 ---
 ## 💻 Software Requirements
 - Arduino IDE 2.x
