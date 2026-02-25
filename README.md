@@ -8,6 +8,7 @@
 
 ## 📌 Project Overview
 This project implements a system that lets you control the caffeine level of your coffee. While caffeine can help maintain focus, the amount in a typical espresso is often excessive and may lead to a mental crash some time later, especially after lunch or eating. This system gives you control by allowing smaller, more frequent doses instead of large, infrequent ones.
+![Schematic](images/circuit.jpg)
 
 The diagram below illustrates the process:
 ![Overview](images/Overview.png)
