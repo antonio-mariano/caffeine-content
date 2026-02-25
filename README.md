@@ -79,8 +79,7 @@ You can measure this using the same video: weigh the coffee produced (1 mL ≈
 
 ## ☕ How to Use
 
-The system lets you choose how much caffeine you have in your coffe.  
-You interact with it using the three buttons and the 7‑segment displays.
+You interact with the system using the three buttons and the 7‑segment displays.
 
 Below is a demonstration:  
 ![Schematic](images/system_demo.gif)
